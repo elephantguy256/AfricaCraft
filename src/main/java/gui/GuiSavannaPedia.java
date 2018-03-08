@@ -1,4 +1,4 @@
-package net.minecraft.entity.ai.gui.type;
+package gui;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;

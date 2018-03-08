@@ -1,8 +1,7 @@
-/*    */ package net.minecraft.entity.ai.gui;
+/*    */ package gui;
 /*    */ 
 /*    */ import com.example.examplemod.mainRegistry;
 
-import net.minecraft.entity.ai.gui.type.GuiSavannaPedia;
 /*    */ import net.minecraft.entity.player.EntityPlayer;
 /*    */ import net.minecraft.world.World;
 /*    */ import net.minecraftforge.fml.common.network.IGuiHandler;

@@ -5,9 +5,9 @@ import com.africacraft.item.ModItems;
 import com.hyeanmod.proxy.CommonProxy;
 import com.hyeanmod.proxy.SoundEvents2;
 
+import gui.GuiHandler;
+import gui.GuiSavannaPedia;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.ai.gui.GuiHandler;
-import net.minecraft.entity.ai.gui.type.GuiSavannaPedia;
 import net.minecraft.world.WorldType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;

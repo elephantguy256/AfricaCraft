@@ -2,9 +2,9 @@ package com.africacraft.item;
 
 import com.example.examplemod.mainRegistry;
 
+import gui.GuiSavannaPedia;
 import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.ai.gui.type.GuiSavannaPedia;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
