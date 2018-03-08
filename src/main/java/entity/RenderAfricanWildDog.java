@@ -10,7 +10,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 public class RenderAfricanWildDog extends RenderLiving<EntityAfricanWildDog> {
 
-    private ResourceLocation mobTexture = new ResourceLocation("wildanimals:textures/entity/predator/africanwilddog.png");
+    private ResourceLocation mobTexture = new ResourceLocation("wildanimals:textures/entity/predator/lycaon.png");
 
     public static final Factory FACTORY = new Factory();
 

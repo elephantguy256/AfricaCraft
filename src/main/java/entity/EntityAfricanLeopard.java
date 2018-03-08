@@ -2,55 +2,210 @@ package entity;
 
 import javax.annotation.Nullable;
 
+import com.google.common.base.Predicate;
 import com.hyeanmod.proxy.SoundEvents2;
 
+import deadbodies.EntityDeath;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockCarrot;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackMelee;
+import net.minecraft.entity.ai.EntityAIAvoidEntity;
+import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.EntityAIFollowOwner;
+import net.minecraft.entity.ai.EntityAIHurtByTarget;
 import net.minecraft.entity.ai.EntityAILeapAtTarget;
 import net.minecraft.entity.ai.EntityAIMate;
+import net.minecraft.entity.ai.EntityAIMoveToBlock;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIOcelotAttack;
+import net.minecraft.entity.ai.EntityAIOwnerHurtByTarget;
+import net.minecraft.entity.ai.EntityAIOwnerHurtTarget;
+import net.minecraft.entity.ai.EntityAIPanic;
 import net.minecraft.entity.ai.EntityAISit;
 import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAITargetNonTamed;
 import net.minecraft.entity.ai.EntityAITempt;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityCow;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntityRabbit;
 import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.passive.EntityTameable;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.datafix.DataFixer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeDesert;
 import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class EntityAfricanLeopard extends EntityTameable
+public class EntityAfricanLeopard extends EntityWolf
 {
-    private static final DataParameter<Integer> OCELOT_VARIANT = EntityDataManager.<Integer>createKey(EntityAfricanLeopard.class, DataSerializers.VARINT);
-    /** The tempt AI task for this mob, used to prevent taming while it is fleeing. */
-    private EntityAITempt aiTempt;
+    private static final DataParameter<Integer> RABBIT_TYPE = EntityDataManager.<Integer>createKey(EntityAfricanLeopard.class, DataSerializers.VARINT);
+    private int jumpTicks;
+    private int jumpDuration;
+    private boolean wasOnGround;
+    private int currentMoveTypeDuration;
+    private int carrotTicks;
+	private EntityAIBase aiTempt;
+	   public int entityDeathTime = 100000;
+	    protected boolean dead;
+		protected int recentlyHit;
+		protected EntityPlayer attackingPlayer;
+		private int scoreValue;
+		private String s;
+		private boolean isentityDead;
+		protected EntityAINearestAttackableTarget AINearAttA = new EntityAINearestAttackableTarget(this, EntityDeath.class, true);
+	    /**
+	    /**
+	     * Called by the /kill command.
+	     */
+
+
+	    protected void onDeathUpdate()
+	    {
+	        ++this.deathTime;
+
+	        if (this.deathTime == 1000000)
+	        {
+	            if (!this.worldObj.isRemote && (this.isPlayer() || this.recentlyHit > 0 && this.canDropLoot() && this.worldObj.getGameRules().getBoolean("doMobLoot")))
+	            {
+	                int i = this.getExperiencePoints(this.attackingPlayer);
+	                i = net.minecraftforge.event.ForgeEventFactory.getExperienceDrop(this, this.attackingPlayer, i);
+	                while (i > 0)
+	                {
+	                    int j = EntityXPOrb.getXPSplit(i);
+	                    i -= j;
+	                    this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.posX, this.posY, this.posZ, j));
+	                }
+	            }
+
+	            this.setDead();
+
+	            for (int k = 0; k < 20; ++k)
+	            {
+	                double d2 = this.rand.nextGaussian() * 0.02D;
+	                double d0 = this.rand.nextGaussian() * 0.02D;
+	                double d1 = this.rand.nextGaussian() * 0.02D;
+	                this.worldObj.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, d2, d0, d1, new int[0]);
+	            }
+	        }
+	    }
+
+
+		
+		
+	    public boolean writeToNBTOptional(NBTTagCompound compound)
+	    {
+	        String s = this.getEntityString();
+
+	        if (!this.isentityDead && s != null && !this.isRiding())
+	        {
+	            compound.setString("id", s);
+	            this.writeToNBT(compound);
+	            return true;
+	        }
+	        else
+	        {
+	            return false;
+	        }
+	    }
+
+	    
+
+
+		/**
+	     * (abstract) Protected helper method to read subclass entity data from NBT.
+	     *
+	     
+	    /**
+	     * Called when the mob's health reaches 0.
+	     * 
+	     * 
+	     */
+	    
+
+	    public void onDeath(DamageSource cause)
+	    {
+	        if (net.minecraftforge.common.ForgeHooks.onLivingDeath(this, cause)) return;
+	        if (!this.dead)
+	        {
+	            Entity entity = cause.getEntity();
+	            EntityLivingBase entitylivingbase = this.getAttackingEntity();
+
+	            if (this.scoreValue >= 0 && entitylivingbase != null)
+	            {
+	                entitylivingbase.addToPlayerScore(this, this.scoreValue);
+	            }
+
+	            if (entity != null)
+	            {
+	                entity.onKillEntity(this);
+	            }
+
+	            this.dead = true;
+	            this.getCombatTracker().reset();
+
+	            if (!this.worldObj.isRemote)
+	            {
+	                int i = net.minecraftforge.common.ForgeHooks.getLootingLevel(this, entity, cause);
+
+	                captureDrops = true;
+	                capturedDrops.clear();
+
+	                if (this.canDropLoot() && this.worldObj.getGameRules().getBoolean("doMobLoot"))
+	                {
+	                    boolean flag = this.recentlyHit > 0;
+	                    this.dropLoot(flag, i, cause);
+	                }
+
+	                captureDrops = false;
+
+	                if (!net.minecraftforge.common.ForgeHooks.onLivingDrops(this, cause, capturedDrops, i, recentlyHit > 0))
+	                {
+	                    for (EntityItem item : capturedDrops)
+	                    {
+	                        worldObj.spawnEntityInWorld(item);
+	                    }
+	                }
+	            }
+
+	            this.worldObj.setEntityState(this, (byte)3);
+	        }
+	    }
 
     public EntityAfricanLeopard(World worldIn)
     {
@@ -63,6 +218,13 @@ public class EntityAfricanLeopard extends EntityTameable
     this.targetTasks.addTask(5, new EntityAINearestAttackableTarget(this, EntityHorse.class, false));
     this.targetTasks.addTask(5, new EntityAINearestAttackableTarget(this, EntityCow.class, false));
     this.targetTasks.addTask(5, new EntityAINearestAttackableTarget(this, EntityWildebeest.class, false));
+    this.targetTasks.addTask(5, new EntityAINearestAttackableTarget(this, EntitySpottedHyena.class, false));
+    this.targetTasks.addTask(5, new EntityAINearestAttackableTarget(this, EntityAfricanWildDog.class, false));
+    this.targetTasks.addTask(5, new EntityAINearestAttackableTarget(this, EntityAfricanLeopard.class, false));
+    this.targetTasks.addTask(5, new EntityAINearestAttackableTarget(this, EntityStripedHyena.class, false));
+    this.targetTasks.addTask(5, new EntityAINearestAttackableTarget(this, EntityBrownHyena.class, false));
+    this.targetTasks.addTask(5, new EntityAINearestAttackableTarget(this, EntityDeath.class, false));
+    this.tasks.addTask(1, new EntityAISwimming(this));
     this.tasks.addTask(1, new EntityAISwimming(this));
     this.tasks.addTask(2, this.aiSit);
     this.tasks.addTask(3, this.aiTempt);
@@ -71,66 +233,196 @@ public class EntityAfricanLeopard extends EntityTameable
     this.tasks.addTask(8, new EntityAIOcelotAttack(this));
     this.tasks.addTask(9, new EntityAIMate(this, 0.8D));
     this.tasks.addTask(10, new EntityAIWander(this, 0.8D));
-    this.tasks.addTask(11, new EntityAIWatchClosest(this, EntityPlayer.class, 10.0F));
+    this.targetTasks.addTask(1, new EntityAIOwnerHurtByTarget(this));
+    this.targetTasks.addTask(2, new EntityAIOwnerHurtTarget(this));
+    this.targetTasks.addTask(3, new EntityAIHurtByTarget(this, true, new Class[0]));
+    this.targetTasks.addTask(4, new EntityAITargetNonTamed(this, EntityPlayer.class, false, new Predicate<Entity>()
+    {
+        public boolean apply(@Nullable Entity p_apply_1_)
+        {
+            return p_apply_1_ instanceof EntitySheep || p_apply_1_ instanceof EntityRabbit;
+        }
+    }));
+    this.targetTasks.addTask(5, new EntityAINearestAttackableTarget(this, EntityPlayer.class, false));
+
 }
 
-    protected void entityInit()
-    {
-        super.entityInit();
-        this.dataManager.register(OCELOT_VARIANT, Integer.valueOf(0));
-    }
 
-    public void updateAITasks()
+    protected float getJumpUpwardsMotion()
     {
-        if (this.getMoveHelper().isUpdating())
+        if (!this.isCollidedHorizontally && (!this.moveHelper.isUpdating() || this.moveHelper.getY() <= this.posY + 0.5D))
         {
-            double d0 = this.getMoveHelper().getSpeed();
+            Path path = this.navigator.getPath();
 
-            if (d0 == 0.6D)
+            if (path != null && path.getCurrentPathIndex() < path.getCurrentPathLength())
             {
-                this.setSneaking(true);
-                this.setSprinting(false);
+                Vec3d vec3d = path.getPosition(this);
+
+                if (vec3d.yCoord > this.posY)
+                {
+                    return 0.5F;
+                }
             }
-            else if (d0 == 1.33D)
-            {
-                this.setSneaking(false);
-                this.setSprinting(true);
-            }
-            else
-            {
-                this.setSneaking(false);
-                this.setSprinting(false);
-            }
+
+            return this.moveHelper.getSpeed() <= 0.6D ? 0.2F : 0.3F;
         }
         else
         {
-            this.setSneaking(false);
-            this.setSprinting(false);
+            return 0.5F;
         }
     }
 
     /**
-     * Determines if an entity can be despawned, used on idle far away entities
+     * Causes this entity to do an upwards motion (jumping).
      */
-    protected boolean canDespawn()
+    protected void jump()
     {
-        return !this.isTamed() && this.ticksExisted > 2400;
+        super.jump();
+        double d0 = this.moveHelper.getSpeed();
+
+        if (d0 > 0.0D)
+        {
+            double d1 = this.motionX * this.motionX + this.motionZ * this.motionZ;
+
+            if (d1 < 0.010000000000000002D)
+            {
+                this.moveRelative(0.0F, 1.0F, 0.1F);
+            }
+        }
+
+        if (!this.worldObj.isRemote)
+        {
+            this.worldObj.setEntityState(this, (byte)1);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    public float setJumpCompletion(float p_175521_1_)
+    {
+        return this.jumpDuration == 0 ? 0.0F : ((float)this.jumpTicks + p_175521_1_) / (float)this.jumpDuration;
+    }
+
+    public void setMovementSpeed(double newSpeed)
+    {
+        this.getNavigator().setSpeed(newSpeed);
+        this.moveHelper.setMoveTo(this.moveHelper.getX(), this.moveHelper.getY(), this.moveHelper.getZ(), newSpeed);
+    }
+
+
+    public void startJumping()
+    {
+        this.setJumping(true);
+        this.jumpDuration = 10;
+        this.jumpTicks = 0;
+    }
+
+    protected void entityInit()
+    {
+        super.entityInit();
+        this.dataManager.register(RABBIT_TYPE, Integer.valueOf(0));
+    }
+
+    public void updateAITasks()
+    {
+        if (this.currentMoveTypeDuration > 0)
+        {
+            --this.currentMoveTypeDuration;
+        }
+
+        if (this.carrotTicks > 0)
+        {
+            this.carrotTicks -= this.rand.nextInt(3);
+
+            if (this.carrotTicks < 0)
+            {
+                this.carrotTicks = 0;
+            }
+        }
+
+        if (this.onGround)
+        {
+            if (!this.wasOnGround)
+            {
+                this.setJumping(false);
+                this.checkLandingDelay();
+            }
+
+            if (this.getRabbitType() == 99 && this.currentMoveTypeDuration == 0)
+            {
+                EntityLivingBase entitylivingbase = this.getAttackTarget();
+
+                if (entitylivingbase != null && this.getDistanceSqToEntity(entitylivingbase) < 16.0D)
+                {
+                    this.calculateRotationYaw(entitylivingbase.posX, entitylivingbase.posZ);
+                    this.moveHelper.setMoveTo(entitylivingbase.posX, entitylivingbase.posY, entitylivingbase.posZ, this.moveHelper.getSpeed());
+                    this.startJumping();
+                    this.wasOnGround = true;
+                }
+            }
+
+
+        this.wasOnGround = this.onGround;
+    }
+    }
+    /**
+     * Attempts to create sprinting particles if the entity is sprinting and not in water.
+     */
+    public void spawnRunningParticles()
+    {
+    }
+
+    private void calculateRotationYaw(double x, double z)
+    {
+        this.rotationYaw = (float)(MathHelper.atan2(z - this.posZ, x - this.posX) * (180D / Math.PI)) - 90.0F;
+    }
+
+    private void updateMoveTypeDuration()
+    {
+        if (this.moveHelper.getSpeed() < 2.2D)
+        {
+            this.currentMoveTypeDuration = 10;
+        }
+        else
+        {
+            this.currentMoveTypeDuration = 1;
+        }
+    }
+
+    private void checkLandingDelay()
+    {
+        this.updateMoveTypeDuration();
+    }
+
+    /**
+     * Called frequently so the entity can update its state every tick as required. For example, zombies and skeletons
+     * use this to react to sunlight and start to burn.
+     */
+    public void onLivingUpdate()
+    {
+        super.onLivingUpdate();
+
+        if (this.jumpTicks != this.jumpDuration)
+        {
+            ++this.jumpTicks;
+        }
+        else if (this.jumpDuration != 0)
+        {
+            this.jumpTicks = 0;
+            this.jumpDuration = 0;
+            this.setJumping(false);
+        }
     }
 
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(3.0D);
         this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.30000001192092896D);
     }
 
-    public void fall(float distance, float damageMultiplier)
+    public static void registerFixesRabbit(DataFixer fixer)
     {
-    }
-
-    public static void registerFixesOcelot(DataFixer fixer)
-    {
-        EntityLiving.registerFixesMob(fixer, "Ozelot");
+        EntityLiving.registerFixesMob(fixer, "Rabbit");
     }
 
     /**
@@ -139,7 +431,8 @@ public class EntityAfricanLeopard extends EntityTameable
     public void writeEntityToNBT(NBTTagCompound compound)
     {
         super.writeEntityToNBT(compound);
-        compound.setInteger("CatType", this.getTameSkin());
+        compound.setInteger("RabbitType", this.getRabbitType());
+        compound.setInteger("MoreCarrotTicks", this.carrotTicks);
     }
 
     /**
@@ -148,10 +441,11 @@ public class EntityAfricanLeopard extends EntityTameable
     public void readEntityFromNBT(NBTTagCompound compound)
     {
         super.readEntityFromNBT(compound);
-        this.setTameSkin(compound.getInteger("CatType"));
+        this.setRabbitType(compound.getInteger("RabbitType"));
+        this.carrotTicks = compound.getInteger("MoreCarrotTicks");
     }
 
-    @Nullable
+
     protected SoundEvent getAmbientSound()
     {
         return SoundEvents2.LEOPARD;
@@ -167,17 +461,22 @@ public class EntityAfricanLeopard extends EntityTameable
         return SoundEvents2.LEOPARD;
     }
 
-    /**
-     * Returns the volume for the sounds this mob makes.
-     */
-    protected float getSoundVolume()
-    {
-        return 0.4F;
-    }
-
     public boolean attackEntityAsMob(Entity entityIn)
     {
-        return entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), 3.0F);
+        if (this.getRabbitType() == 99)
+        {
+            this.playSound(SoundEvents.ENTITY_RABBIT_ATTACK, 1.0F, (this.rand.nextFloat() - this.rand.nextFloat()) * 0.2F + 1.0F);
+            return entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), 8.0F);
+        }
+        else
+        {
+            return entityIn.attackEntityFrom(DamageSource.causeMobDamage(this), 3.0F);
+        }
+    }
+
+    public SoundCategory getSoundCategory()
+    {
+        return this.getRabbitType() == 99 ? SoundCategory.HOSTILE : SoundCategory.NEUTRAL;
     }
 
     /**
@@ -185,79 +484,39 @@ public class EntityAfricanLeopard extends EntityTameable
      */
     public boolean attackEntityFrom(DamageSource source, float amount)
     {
-        if (this.isEntityInvulnerable(source))
-        {
-            return false;
-        }
-        else
-        {
-            if (this.aiSit != null)
-            {
-                this.aiSit.setSitting(false);
-            }
-
-            return super.attackEntityFrom(source, amount);
-        }
+        return this.isEntityInvulnerable(source) ? false : super.attackEntityFrom(source, amount);
     }
 
     @Nullable
     protected ResourceLocation getLootTable()
     {
-        return LootTableList.ENTITIES_OCELOT;
+        return LootTableList.ENTITIES_RABBIT;
     }
 
-    public boolean processInteract(EntityPlayer player, EnumHand hand, @Nullable ItemStack stack)
+    private boolean isRabbitBreedingItem(Item itemIn)
     {
-        if (this.isTamed())
-        {
-            if (this.isOwner(player) && !this.worldObj.isRemote && !this.isBreedingItem(stack))
-            {
-                this.aiSit.setSitting(!this.isSitting());
-            }
-        }
-        else if ((this.aiTempt == null || this.aiTempt.isRunning()) && stack != null && stack.getItem() == Items.FISH && player.getDistanceSqToEntity(this) < 9.0D)
-        {
-            if (!player.capabilities.isCreativeMode)
-            {
-                --stack.stackSize;
-            }
-
-            if (!this.worldObj.isRemote)
-            {
-                if (this.rand.nextInt(3) == 0)
-                {
-                    this.setTamed(true);
-                    this.setTameSkin(1 + this.worldObj.rand.nextInt(3));
-                    this.setOwnerId(player.getUniqueID());
-                    this.playTameEffect(true);
-                    this.aiSit.setSitting(true);
-                    this.worldObj.setEntityState(this, (byte)7);
-                }
-                else
-                {
-                    this.playTameEffect(false);
-                    this.worldObj.setEntityState(this, (byte)6);
-                }
-            }
-
-            return true;
-        }
-
-        return super.processInteract(player, hand, stack);
+        return itemIn == Items.ROTTEN_FLESH || itemIn == Items.ROTTEN_FLESH || itemIn == Item.getItemFromBlock(Blocks.YELLOW_FLOWER);
     }
 
     public EntityAfricanLeopard createChild(EntityAgeable ageable)
     {
-        EntityAfricanLeopard entityocelot = new EntityAfricanLeopard(this.worldObj);
+        EntityAfricanLeopard entityrabbit = new EntityAfricanLeopard(this.worldObj);
+        int i = this.getRandomRabbitType();
 
-        if (this.isTamed())
+        if (this.rand.nextInt(20) != 0)
         {
-            entityocelot.setOwnerId(this.getOwnerId());
-            entityocelot.setTamed(true);
-            entityocelot.setTameSkin(this.getTameSkin());
+            if (ageable instanceof EntityAfricanLeopard && this.rand.nextBoolean())
+            {
+                i = ((EntityAfricanLeopard)ageable).getRabbitType();
+            }
+            else
+            {
+                i = this.getRabbitType();
+            }
         }
 
-        return entityocelot;
+        entityrabbit.setRabbitType(i);
+        return entityrabbit;
     }
 
     /**
@@ -266,88 +525,31 @@ public class EntityAfricanLeopard extends EntityTameable
      */
     public boolean isBreedingItem(@Nullable ItemStack stack)
     {
-        return stack != null && stack.getItem() == Items.FISH;
+        return stack != null && this.isRabbitBreedingItem(stack.getItem());
     }
 
-    /**
-     * Returns true if the mob is currently able to mate with the specified mob.
-     */
-    public boolean canMateWith(EntityAnimal otherAnimal)
+    public int getRabbitType()
     {
-        if (otherAnimal == this)
-        {
-            return false;
-        }
-        else if (!this.isTamed())
-        {
-            return false;
-        }
-        else if (!(otherAnimal instanceof EntityAfricanLeopard))
-        {
-            return false;
-        }
-        else
-        {
-            EntityAfricanLeopard entityocelot = (EntityAfricanLeopard)otherAnimal;
-            return !entityocelot.isTamed() ? false : this.isInLove() && entityocelot.isInLove();
-        }
+        return ((Integer)this.dataManager.get(RABBIT_TYPE)).intValue();
     }
 
-    public int getTameSkin()
+    public void setRabbitType(int rabbitTypeId)
     {
-        return ((Integer)this.dataManager.get(OCELOT_VARIANT)).intValue();
-    }
-
-    public void setTameSkin(int skinId)
-    {
-        this.dataManager.set(OCELOT_VARIANT, Integer.valueOf(skinId));
-    }
-
-    /**
-     * Checks if the entity's current position is a valid location to spawn this entity.
-     */
-    public boolean getCanSpawnHere()
-    {
-        return this.worldObj.rand.nextInt(3) != 0;
-    }
-
-    /**
-     * Checks that the entity is not colliding with any blocks / liquids
-     */
-    public boolean isNotColliding()
-    {
-        if (this.worldObj.checkNoEntityCollision(this.getEntityBoundingBox(), this) && this.worldObj.getCollisionBoxes(this, this.getEntityBoundingBox()).isEmpty() && !this.worldObj.containsAnyLiquid(this.getEntityBoundingBox()))
+        if (rabbitTypeId == 99)
         {
-            BlockPos blockpos = new BlockPos(this.posX, this.getEntityBoundingBox().minY, this.posZ);
+            this.getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(8.0D);
+            this.tasks.addTask(4, new EntityAfricanLeopard.AIEvilAttack(this));
+            this.targetTasks.addTask(1, new EntityAIHurtByTarget(this, false, new Class[0]));
+            this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityPlayer.class, true));
+            this.targetTasks.addTask(2, new EntityAINearestAttackableTarget(this, EntityWolf.class, true));
 
-            if (blockpos.getY() < this.worldObj.getSeaLevel())
+            if (!this.hasCustomName())
             {
-                return false;
-            }
-
-            IBlockState iblockstate = this.worldObj.getBlockState(blockpos.down());
-            Block block = iblockstate.getBlock();
-
-            if (block == Blocks.GRASS || block.isLeaves(iblockstate, this.worldObj, blockpos.down()))
-            {
-                return true;
+                this.setCustomNameTag(I18n.translateToLocal("entity.KillerBunny.name"));
             }
         }
 
-        return false;
-    }
-
-    /**
-     * Get the name of this object. For players this returns their username
-     */
-    public String getName()
-    {
-        return this.hasCustomName() ? this.getCustomNameTag() : (this.isTamed() ? I18n.translateToLocal("entity.Cat.name") : super.getName());
-    }
-
-    public void setTamed(boolean tamed)
-    {
-        super.setTamed(tamed);
+        this.dataManager.set(RABBIT_TYPE, Integer.valueOf(rabbitTypeId));
     }
 
     /**
@@ -358,23 +560,230 @@ public class EntityAfricanLeopard extends EntityTameable
     public IEntityLivingData onInitialSpawn(DifficultyInstance difficulty, @Nullable IEntityLivingData livingdata)
     {
         livingdata = super.onInitialSpawn(difficulty, livingdata);
+        int i = this.getRandomRabbitType();
+        boolean flag = false;
 
-        if (this.getTameSkin() == 0 && this.worldObj.rand.nextInt(7) == 0)
+        this.setRabbitType(i);
+
+        if (flag)
         {
-            for (int i = 0; i < 2; ++i)
-            {
-                EntityAfricanLeopard entityocelot = new EntityAfricanLeopard(this.worldObj);
-                entityocelot.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, 0.0F);
-                entityocelot.setGrowingAge(-24000);
-                this.worldObj.spawnEntityInWorld(entityocelot);
-            }
+            this.setGrowingAge(-24000);
         }
 
         return livingdata;
     }
 
-	public int getAnimalType() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-}
+    private int getRandomRabbitType()
+    {
+        Biome biome = this.worldObj.getBiome(new BlockPos(this));
+        int i = this.rand.nextInt(100);
+        return biome.isSnowyBiome() ? (i < 80 ? 1 : 3) : (biome instanceof BiomeDesert ? 4 : (i < 50 ? 0 : (i < 90 ? 5 : 2)));
+    }
+
+    /**
+     * Returns true if {@link net.minecraft.entity.passive.EntityRabbit#carrotTicks carrotTicks} has reached zero
+     */
+    private boolean isCarrotEaten()
+    {
+        return this.carrotTicks == 0;
+    }
+
+    protected void createEatingParticles()
+    {
+        BlockCarrot blockcarrot = (BlockCarrot)Blocks.CARROTS;
+        IBlockState iblockstate = blockcarrot.withAge(blockcarrot.getMaxAge());
+        this.worldObj.spawnParticle(EnumParticleTypes.BLOCK_DUST, this.posX + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, this.posY + 0.5D + (double)(this.rand.nextFloat() * this.height), this.posZ + (double)(this.rand.nextFloat() * this.width * 2.0F) - (double)this.width, 0.0D, 0.0D, 0.0D, new int[] {Block.getStateId(iblockstate)});
+        this.carrotTicks = 40;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public void handleStatusUpdate(byte id)
+    {
+        if (id == 1)
+        {
+            this.createRunningParticles();
+            this.jumpDuration = 10;
+            this.jumpTicks = 0;
+        }
+        else
+        {
+            super.handleStatusUpdate(id);
+        }
+    }
+
+    public void notifyDataManagerChange(DataParameter<?> key)
+    {
+        super.notifyDataManagerChange(key);
+    }
+
+    static class AIAvoidEntity<T extends Entity> extends EntityAIAvoidEntity<T>
+        {
+            private final EntityAfricanLeopard entityInstance;
+
+            public AIAvoidEntity(EntityAfricanLeopard rabbit, Class<T> p_i46403_2_, float p_i46403_3_, double p_i46403_4_, double p_i46403_6_)
+            {
+                super(rabbit, p_i46403_2_, p_i46403_3_, p_i46403_4_, p_i46403_6_);
+                this.entityInstance = rabbit;
+            }
+
+            /**
+             * Returns whether the EntityAIBase should begin execution.
+             */
+            public boolean shouldExecute()
+            {
+                return this.entityInstance.getRabbitType() != 99 && super.shouldExecute();
+            }
+        }
+
+    static class AIEvilAttack extends EntityAIAttackMelee
+        {
+            public AIEvilAttack(EntityAfricanLeopard rabbit)
+            {
+                super(rabbit, 1.4D, true);
+            }
+
+            protected double getAttackReachSqr(EntityLivingBase attackTarget)
+            {
+                return (double)(4.0F + attackTarget.width);
+            }
+        }
+
+    static class AIPanic extends EntityAIPanic
+        {
+            private final EntityAfricanLeopard theEntity;
+
+            public AIPanic(EntityAfricanLeopard rabbit, double speedIn)
+            {
+                super(rabbit, speedIn);
+                this.theEntity = rabbit;
+            }
+
+            /**
+             * Updates the task
+             */
+            public void updateTask()
+            {
+                super.updateTask();
+                this.theEntity.setMovementSpeed(this.speed);
+            }
+        }
+
+    static class AIRaidFarm extends EntityAIMoveToBlock
+        {
+            private final EntityAfricanLeopard rabbit;
+            private boolean wantsToRaid;
+            private boolean canRaid;
+
+            public AIRaidFarm(EntityAfricanLeopard rabbitIn)
+            {
+                super(rabbitIn, 0.699999988079071D, 16);
+                this.rabbit = rabbitIn;
+            }
+
+            /**
+             * Returns whether the EntityAIBase should begin execution.
+             */
+            public boolean shouldExecute()
+            {
+                if (this.runDelay <= 0)
+                {
+                    if (!this.rabbit.worldObj.getGameRules().getBoolean("mobGriefing"))
+                    {
+                        return false;
+                    }
+
+                    this.canRaid = false;
+                    this.wantsToRaid = this.rabbit.isCarrotEaten();
+                    this.wantsToRaid = true;
+                }
+
+                return super.shouldExecute();
+            }
+
+            /**
+             * Returns whether an in-progress EntityAIBase should continue executing
+             */
+            public boolean continueExecuting()
+            {
+                return this.canRaid && super.continueExecuting();
+            }
+
+            /**
+             * Execute a one shot task or start executing a continuous task
+             */
+            public void startExecuting()
+            {
+                super.startExecuting();
+            }
+
+            /**
+             * Resets the task
+             */
+            public void resetTask()
+            {
+                super.resetTask();
+            }
+
+            /**
+             * Updates the task
+             */
+            public void updateTask()
+            {
+                super.updateTask();
+                this.rabbit.getLookHelper().setLookPosition((double)this.destinationBlock.getX() + 0.5D, (double)(this.destinationBlock.getY() + 1), (double)this.destinationBlock.getZ() + 0.5D, 10.0F, (float)this.rabbit.getVerticalFaceSpeed());
+
+                if (this.getIsAboveDestination())
+                {
+                    World world = this.rabbit.worldObj;
+                    BlockPos blockpos = this.destinationBlock.up();
+                    IBlockState iblockstate = world.getBlockState(blockpos);
+                    Block block = iblockstate.getBlock();
+
+                    if (this.canRaid && block instanceof BlockCarrot)
+                    {
+                        Integer integer = (Integer)iblockstate.getValue(BlockCarrot.AGE);
+
+                        if (integer.intValue() == 0)
+                        {
+                            world.setBlockState(blockpos, Blocks.AIR.getDefaultState(), 2);
+                            world.destroyBlock(blockpos, true);
+                        }
+                        else
+                        {
+                            world.setBlockState(blockpos, iblockstate.withProperty(BlockCarrot.AGE, Integer.valueOf(integer.intValue() - 1)), 2);
+                            world.playEvent(2001, blockpos, Block.getStateId(iblockstate));
+                        }
+
+                        this.rabbit.createEatingParticles();
+                    }
+
+                    this.canRaid = false;
+                    this.runDelay = 10;
+                }
+            }
+
+            /**
+             * Return true to set given position as destination
+             */
+            protected boolean shouldMoveTo(World worldIn, BlockPos pos)
+            {
+                Block block = worldIn.getBlockState(pos).getBlock();
+
+                if (block == Blocks.FARMLAND && this.wantsToRaid && !this.canRaid)
+                {
+                    pos = pos.up();
+                    IBlockState iblockstate = worldIn.getBlockState(pos);
+                    block = iblockstate.getBlock();
+
+                    if (block instanceof BlockCarrot && ((BlockCarrot)block).isMaxAge(iblockstate))
+                    {
+                        this.canRaid = true;
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }
+
+  }

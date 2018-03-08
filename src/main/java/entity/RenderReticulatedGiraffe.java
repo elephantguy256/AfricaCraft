@@ -10,7 +10,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 public class RenderReticulatedGiraffe extends RenderLiving<EntityReticulatedGiraffe> {
 
-    private ResourceLocation mobTexture = new ResourceLocation("wildanimals:textures/entity/preyanimal/reticulatedgiraffe.png");
+    private ResourceLocation mobTexture = new ResourceLocation("wildanimals:textures/entity/preyanimal/giraffer.png");
 
     public static final Factory FACTORY = new Factory();
 

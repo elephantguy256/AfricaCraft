@@ -3,6 +3,7 @@
 /*     */ import net.minecraft.client.model.ModelBase;
 /*     */ import net.minecraft.client.model.ModelRenderer;
 /*     */ import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 /*     */ import net.minecraft.util.math.MathHelper;
 /*     */ 
 /*     */ 
@@ -22,6 +23,7 @@
 /*     */   public ModelRenderer field_78185_a1;
 /*     */   public ModelRenderer shape15;
 /*     */   public ModelRenderer shape16;
+private int state;
 /*     */   
 /*     */   public ModelBrownHyena()
 /*     */   {
@@ -112,10 +114,43 @@
 /* 112 */     this.wolfLeg2.rotateAngleX = (MathHelper.cos(par1 * 0.6662F) * 1.4F * par2);
 /* 113 */     this.wolfLeg3.rotateAngleX = (MathHelper.cos(par1 * 0.6662F + 3.1415927F) * 1.4F * par2);
 /*     */   }
-/*     */ }
+/*     */ 
+
+/*     */   public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float p_78086_2_, float p_78086_3_, float partialTickTime)
+/*     */   {
+	/* 110 */     this.wolfLeg4.rotateAngleX = (MathHelper.cos(p_78086_2_ * 0.6662F) * 1.4F * p_78086_3_);
+	/* 111 */     this.wolfLeg1.rotateAngleX = (MathHelper.cos(p_78086_2_ * 0.6662F + 3.1415927F) * 1.4F * p_78086_3_);
+	/* 112 */     this.wolfLeg2.rotateAngleX = (MathHelper.cos(p_78086_2_ * 0.6662F) * 1.4F * p_78086_3_);
+	/* 113 */     this.wolfLeg3.rotateAngleX = (MathHelper.cos(p_78086_2_ * 0.6662F + 3.1415927F) * 1.4F * p_78086_3_);
+/* 226 */     EntityBrownHyena entityocelot = (EntityBrownHyena)entitylivingbaseIn;
+/*     */     
+/* 233 */     if (entityocelot.isSneaking())
+/*     */     {
+    this.field_78185_a0.setRotationPoint(-0.5F, 15.0F, -7.1F);
+    this.setRotateAngle(field_78185_a0, 0.091106186954104F, 0.0F, 0.0F);
+/* 239 */       this.state = 0;
+/*     */     }
+/* 241 */    else if (entityocelot.isSprinting())
+/*     */     {
+	/*  60 */     this.field_78185_a0.setRotationPoint(-0.5F, 13.1F, -6.3F);
+	/*  62 */     setRotateAngle(this.field_78185_a0, -0.27314404F, 0.0F, 0.0F);
+	/* 253 */       this.wolfTail.setRotationPoint(-1.3F, 13.0F, 8.0F);
+	/* 254 */       setRotateAngle(this.wolfTail, 0.045553092F, 0.0F, 0.0F);
+      /* 239 */       this.state = 2;
+}
+      else
+      {
+    		/*  60 */     this.field_78185_a0.setRotationPoint(-0.5F, 13.1F, -6.3F);
+    		/*  62 */     setRotateAngle(this.field_78185_a0, -0.27314404F, 0.0F, 0.0F);
+            this.wolfTail.setRotationPoint(-1.0F, 12.699999809265137F, 6.5F);
+            this.setRotateAngle(wolfTail, 0.4553563892841339F, 0.0F, 0.0F);
+      }
+}
+}
+/*     */
 
 
-/* Location:              C:\Users\jhwol\Downloads\big update-deobf.jar!\com\africacraft\mob\ModelBrownHyena.class
+/* Location:              C:\Users\jhwol\Downloads\big update-deobf.jar!\com\africacraft\mob\ModelAfricanWildDog.class
  * Java compiler version: 8 (52.0)
  * JD-Core Version:       0.7.1
  */

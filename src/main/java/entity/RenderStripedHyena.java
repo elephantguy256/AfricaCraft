@@ -10,7 +10,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 public class RenderStripedHyena extends RenderLiving<EntityStripedHyena> {
 
-    private ResourceLocation mobTexture = new ResourceLocation("wildanimals:textures/entity/predator/stripedHyena.png");
+    private ResourceLocation mobTexture = new ResourceLocation("wildanimals:textures/entity/predator/stripedhyena.png");
 
     public static final Factory FACTORY = new Factory();
 

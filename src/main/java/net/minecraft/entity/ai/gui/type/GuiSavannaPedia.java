@@ -17,8 +17,8 @@ public class GuiSavannaPedia extends GuiScreen {
 	  private final int bookImageHeight = 288;
 	  private final int bookImageWidth = 400;
 	  private int currPage = 0;
-	  private static final int bookTotalPages = 12;
-	  private static ResourceLocation[] bookPageTextures = new ResourceLocation[12];
+	  private static final int bookTotalPages = 13;
+	  private static ResourceLocation[] bookPageTextures = new ResourceLocation[13];
 	  private static ResourceLocation bookPageButtonTextures = new ResourceLocation("wildanimals:textures/gui/book.png");
 	  private static String[] stringPageText = new String[14];
 	  private GuiButton buttonDone;
@@ -30,17 +30,19 @@ public class GuiSavannaPedia extends GuiScreen {
 	
     public GuiSavannaPedia() {
         bookPageTextures[0] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book.png");
-        bookPageTextures[1] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book0.png");
-        bookPageTextures[2] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book1.png");
-        bookPageTextures[3] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book2.png");
-        bookPageTextures[4] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book3.png");
-        bookPageTextures[5] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book4.png");
-        bookPageTextures[6] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book5.png");
-        bookPageTextures[7] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book6.png");
-        bookPageTextures[8] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book7.png");
-        bookPageTextures[9] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book8.png");
-        bookPageTextures[10] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book9.png");
-        bookPageTextures[11] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book10.png");
+        bookPageTextures[1] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/tbc.png");
+        bookPageTextures[2] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book0.png");
+        bookPageTextures[3] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book1.png");
+        bookPageTextures[4] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book2.png");
+        bookPageTextures[5] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book3.png");
+        bookPageTextures[6] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book4.png");
+        bookPageTextures[7] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book5.png");
+        bookPageTextures[8] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book6.png");
+        bookPageTextures[9] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book7.png");
+        bookPageTextures[10] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book8.png");
+        bookPageTextures[11] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book9.png");
+        bookPageTextures[12] = new ResourceLocation("wildanimals:textures/gui/AnimalBook/book10.png");
+
         
         stringPageText[0] = "";
         stringPageText[1] = "";
@@ -55,6 +57,7 @@ public class GuiSavannaPedia extends GuiScreen {
         stringPageText[9] = "";
         stringPageText[10] = "";
         stringPageText[11] = "";
+        stringPageText[12] = "";
       }
   
       @Override
@@ -97,7 +100,7 @@ public class GuiSavannaPedia extends GuiScreen {
           else if (currPage == 1)
           {
            mc.getTextureManager().bindTexture(bookPageTextures[1]);
-          } 
+          }
           else if (currPage == 2)
           {
            mc.getTextureManager().bindTexture(bookPageTextures[2]);
@@ -130,10 +133,18 @@ public class GuiSavannaPedia extends GuiScreen {
           {
            mc.getTextureManager().bindTexture(bookPageTextures[9]);
           } 
-          else
+          else if (currPage == 10)
           {
            mc.getTextureManager().bindTexture(bookPageTextures[10]);
           } 
+          else if (currPage == 11)
+          {
+           mc.getTextureManager().bindTexture(bookPageTextures[11]);
+          }
+           if (currPage == 12)
+          {
+           mc.getTextureManager().bindTexture(bookPageTextures[12]);
+          }
          
           int offsetFromScreenLeft = (width - bookImageWidth ) / 2;
           this.drawModalRectWithCustomSizedTexture(offLeft, offTop, 0, 0, bookImageWidth,bookImageHeight - 90,bookImageWidth,bookImageHeight);

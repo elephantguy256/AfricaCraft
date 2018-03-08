@@ -10,7 +10,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 public class RenderBlackBackedJackal extends RenderLiving<EntityBlackBackedJackal> {
 
-    private ResourceLocation mobTexture = new ResourceLocation("wildanimals:textures/entity/predator/blackbackedjackal.png");
+    private ResourceLocation mobTexture = new ResourceLocation("wildanimals:textures/entity/predator/bbjackal.png");
 
     public static final Factory FACTORY = new Factory();
 

@@ -8,6 +8,7 @@ import com.hyeanmod.proxy.SoundEvents2;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.ai.gui.GuiHandler;
 import net.minecraft.entity.ai.gui.type.GuiSavannaPedia;
+import net.minecraft.world.WorldType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -30,7 +31,9 @@ public class mainRegistry {
     public static mainRegistry instance;
 
     public static CreativeTabs acItems;
-
+	public static boolean useLocalSkin;
+	public static boolean displayNameTag;
+    
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
     	acItems = new AfricaCraftItemsTab(CreativeTabs.getNextID(), "acItems");
@@ -40,17 +43,23 @@ public class mainRegistry {
         ModEntities.registerEntity();
         SoundEvents2.registerSounds();
         GuiHandler.init();
-    }
+    } 
 
-    @EventHandler
+	@EventHandler
     public void init(FMLInitializationEvent event) {
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
         proxy.init(event);
+        ACConfig.init(event);
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(new GuiSavannaPedia());
         proxy.postInit(event);
+		WorldType OPEN_PLAINS = new WorldTypeOpenPlains();
     }
+
+	public static mainRegistry getInstance(){
+		return instance;
+	}
 }

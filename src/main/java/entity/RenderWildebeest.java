@@ -10,7 +10,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 public class RenderWildebeest extends RenderLiving<EntityWildebeest> {
 
-    private ResourceLocation mobTexture = new ResourceLocation("wildanimals:textures/entity/preyanimal/wildebeest.png");
+    private ResourceLocation mobTexture = new ResourceLocation("wildanimals:textures/entity/prey/wildebeest.png");
 
     public static final Factory FACTORY = new Factory();
 

@@ -1,102 +1,189 @@
-/*    */ package entity;
-/*    */ 
-/*    */ import net.minecraft.client.model.ModelBase;
-/*    */ import net.minecraft.client.model.ModelRenderer;
-/*    */ import net.minecraft.entity.Entity;
-/*    */ import net.minecraft.util.math.MathHelper;
-/*    */ 
-/*    */ 
-/*    */ public class ModelAfricanWildDog
-/*    */   extends ModelBase
-/*    */ {
-/*    */   public ModelRenderer wolfLeg4;
-/*    */   public ModelRenderer wolfMane;
-/*    */   public ModelRenderer wolfBody;
-/*    */   public ModelRenderer wolfLeg2;
-/*    */   public ModelRenderer wolfLeg1;
-/*    */   public ModelRenderer wolfLeg3;
-/*    */   public ModelRenderer wolfTail;
-/*    */   public ModelRenderer field_78185_a0;
-/*    */   public ModelRenderer field_78185_a1;
-/*    */   public ModelRenderer field_78185_a2;
-/*    */   public ModelRenderer field_78185_a3;
-/*    */   
-/*    */   public ModelAfricanWildDog()
-/*    */   {
-/* 26 */     this.textureWidth = 64;
-/* 27 */     this.textureHeight = 32;
-/* 28 */     this.wolfLeg1 = new ModelRenderer(this, 0, 18);
-/* 29 */     this.wolfLeg1.setRotationPoint(-2.5F, 16.0F, 4.8F);
-/* 30 */     this.wolfLeg1.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2, 0.0F);
-/* 31 */     this.field_78185_a0 = new ModelRenderer(this, 0, 0);
-/* 32 */     this.field_78185_a0.setRotationPoint(-1.0F, 11.9F, -6.9F);
-/* 33 */     this.field_78185_a0.addBox(-3.0F, -3.0F, -2.0F, 6, 5, 4, 0.0F);
-/* 34 */     this.wolfTail = new ModelRenderer(this, 9, 18);
-/* 35 */     this.wolfTail.setRotationPoint(-1.0F, 12.6F, 5.3F);
-/* 36 */     this.wolfTail.addBox(-1.0F, 0.0F, -1.0F, 2, 7, 2, 0.0F);
-/* 37 */     setRotateAngle(this.wolfTail, 0.4553564F, 0.0F, 0.0F);
-/* 38 */     this.field_78185_a2 = new ModelRenderer(this, 16, 14);
-/* 39 */     this.field_78185_a2.setRotationPoint(-0.6F, 12.2F, -7.0F);
-/* 40 */     this.field_78185_a2.addBox(1.0F, -5.0F, 0.0F, 3, 3, 1, 0.0F);
-/* 41 */     this.field_78185_a1 = new ModelRenderer(this, 16, 14);
-/* 42 */     this.field_78185_a1.setRotationPoint(-2.3F, 12.2F, -7.0F);
-/* 43 */     this.field_78185_a1.addBox(-3.0F, -5.0F, 0.0F, 3, 3, 1, 0.0F);
-/* 44 */     this.wolfMane = new ModelRenderer(this, 21, 0);
-/* 45 */     this.wolfMane.setRotationPoint(0.5F, 11.8F, -4.9F);
-/* 46 */     this.wolfMane.addBox(-4.0F, -3.0F, -3.0F, 5, 5, 5, 0.0F);
-/* 47 */     setRotateAngle(this.wolfMane, 2.3675392F, 0.0F, 0.0F);
-/* 48 */     this.wolfLeg3 = new ModelRenderer(this, 0, 18);
-/* 49 */     this.wolfLeg3.setRotationPoint(-2.5F, 16.0F, -3.4F);
-/* 50 */     this.wolfLeg3.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2, 0.0F);
-/* 51 */     this.wolfBody = new ModelRenderer(this, 18, 14);
-/* 52 */     this.wolfBody.setRotationPoint(0.0F, 14.6F, -2.8F);
-/* 53 */     this.wolfBody.addBox(-4.0F, -2.0F, -3.0F, 6, 11, 6, 0.0F);
-/* 54 */     setRotateAngle(this.wolfBody, 1.5707964F, 0.0F, 0.0F);
-/* 55 */     this.wolfLeg4 = new ModelRenderer(this, 0, 18);
-/* 56 */     this.wolfLeg4.setRotationPoint(0.5F, 16.0F, -3.2F);
-/* 57 */     this.wolfLeg4.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2, 0.0F);
-/* 58 */     this.wolfLeg2 = new ModelRenderer(this, 0, 18);
-/* 59 */     this.wolfLeg2.setRotationPoint(0.5F, 16.0F, 4.8F);
-/* 60 */     this.wolfLeg2.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2, 0.0F);
-/* 61 */     this.field_78185_a3 = new ModelRenderer(this, 0, 10);
-/* 62 */     this.field_78185_a3.setRotationPoint(-1.0F, 10.7F, -6.7F);
-/* 63 */     this.field_78185_a3.addBox(-1.5F, 0.0F, -5.0F, 3, 3, 3, 0.0F);
-/*    */   }
-/*    */   
-/*    */   public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
-/*    */   {
-/* 68 */     setRotationAngles(f, f1, f2, f3, f4, f5, entity);
-/* 69 */     this.wolfLeg1.render(f5);
-/* 70 */     this.field_78185_a0.render(f5);
-/* 71 */     this.wolfTail.render(f5);
-/* 72 */     this.field_78185_a2.render(f5);
-/* 73 */     this.field_78185_a1.render(f5);
-/* 74 */     this.wolfMane.render(f5);
-/* 75 */     this.wolfLeg3.render(f5);
-/* 76 */     this.wolfBody.render(f5);
-/* 77 */     this.wolfLeg4.render(f5);
-/* 78 */     this.wolfLeg2.render(f5);
-/* 79 */     this.field_78185_a3.render(f5);
-/*    */   }
-/*    */   
-/*    */ 
-/*    */ 
-/*    */   public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z)
-/*    */   {
-/* 86 */     modelRenderer.rotateAngleX = x;
-/* 87 */     modelRenderer.rotateAngleY = y;
-/* 88 */     modelRenderer.rotateAngleZ = z;
-/*    */   }
-/*    */   
+package entity;
+
+import org.lwjgl.opengl.GL11;
+
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.math.MathHelper;
+
+/**
+ * ModelWildDog - Undefined
+ * Created using Tabula 7.0.0
+ */
+public class ModelAfricanWildDog extends ModelBase {
+    public ModelRenderer field_78179_f;
+    public ModelRenderer field_78186_h;
+    public ModelRenderer field_78183_b;
+    public ModelRenderer field_78181_d;
+    public ModelRenderer field_78184_c;
+    public ModelRenderer field_78182_e;
+    public ModelRenderer field_78180_g;
+    public ModelRenderer shape15;
+    public ModelRenderer field_78185_a0;
+    public ModelRenderer field_78185_a3;
+    public ModelRenderer field_78185_a2;
+    public ModelRenderer field_78185_a1;
+	private int state;
+	private EntityLivingBase EntityLivingBase;
+
+    public ModelAfricanWildDog() {
+        this.textureWidth = 50;
+        this.textureHeight = 100;
+        this.field_78185_a0 = new ModelRenderer(this, 15, 0);
+        this.field_78185_a0.setRotationPoint(-1.5F, 0.2F, 5.6F);
+        this.field_78185_a0.addBox(-3.0F, -4.7F, -1.9F, 6, 6, 5, 0.0F);
+        this.setRotateAngle(field_78185_a0, 0.5918411493512771F, 0.0F, 0.0F);
+        this.field_78183_b = new ModelRenderer(this, 23, 13);
+        this.field_78183_b.setRotationPoint(-0.5F, 13.8F, 0.5F);
+        this.field_78183_b.addBox(-4.0F, -2.0F, -3.0F, 6, 10, 7, 0.0F);
+        this.setRotateAngle(field_78183_b, 1.593485607070823F, 0.0F, 0.0F);
+        this.field_78182_e = new ModelRenderer(this, 0, 18);
+        this.field_78182_e.setRotationPoint(-3.3F, 15.9F, -3.7F);
+        this.field_78182_e.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2, 0.0F);
+        this.setRotateAngle(field_78182_e, 0.0F, -0.091106186954104F, 0.0F);
+        this.field_78186_h = new ModelRenderer(this, 21, 37);
+        this.field_78186_h.setRotationPoint(0.0F, 11.3F, -3.9F);
+        this.field_78186_h.addBox(-4.0F, -3.4F, -3.0F, 5, 5, 9, 0.0F);
+        this.setRotateAngle(field_78186_h, 2.5497515042385164F, 0.0F, 0.0F);
+        this.field_78185_a3 = new ModelRenderer(this, 0, 35);
+        this.field_78185_a3.setRotationPoint(0.1F, -2.1F, 1.1F);
+        this.field_78185_a3.addBox(-1.5F, -1.4F, -5.0F, 3, 3, 4, 0.0F);
+        this.setRotateAngle(field_78185_a3, 3.141592653589793F, 0.0F, 0.0F);
+        this.field_78180_g = new ModelRenderer(this, 9, 18);
+        this.field_78180_g.setRotationPoint(-1.3F, 11.7F, 7.5F);
+        this.field_78180_g.addBox(-1.0F, 0.0F, -1.0F, 2, 7, 2, 0.0F);
+        this.setRotateAngle(field_78180_g, 0.31869712141416456F, 0.0F, 0.0F);
+        this.field_78184_c = new ModelRenderer(this, 0, 18);
+        this.field_78184_c.setRotationPoint(-3.3F, 16.0F, 7.0F);
+        this.field_78184_c.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2, 0.0F);
+        this.shape15 = new ModelRenderer(this, 23, 19);
+        this.shape15.setRotationPoint(-4.9F, 9.6F, -5.9F);
+        this.shape15.addBox(0.0F, 0.0F, 0.0F, 7, 7, 6, 0.0F);
+        this.field_78185_a2 = new ModelRenderer(this, 16, 13);
+        this.field_78185_a2.setRotationPoint(2.4F, -0.1F, -0.8F);
+        this.field_78185_a2.addBox(-1.4F, -0.6F, -0.5F, 3, 4, 1, 0.0F);
+        this.setRotateAngle(field_78185_a2, -0.31869712141416456F, 0.0F, 0.0F);
+        this.field_78179_f = new ModelRenderer(this, 0, 18);
+        this.field_78179_f.setRotationPoint(0.4F, 16.0F, -3.7F);
+        this.field_78179_f.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2, 0.0F);
+        this.field_78185_a1 = new ModelRenderer(this, 16, 13);
+        this.field_78185_a1.setRotationPoint(-1.5F, -1.5F, 0.3F);
+        this.field_78185_a1.addBox(-2.2F, -4.7F, 0.0F, 3, 4, 1, 0.0F);
+        this.setRotateAngle(field_78185_a1, -0.4553564018453205F, 0.045553093477052F, 0.0F);
+        this.setRotateAngle(field_78185_a1, 0.045553093477052F, 0.045553093477052F, 0.0F);
+        this.field_78181_d = new ModelRenderer(this, 0, 18);
+        this.field_78181_d.setRotationPoint(0.4F, 16.0F, 7.0F);
+        this.field_78181_d.addBox(-1.0F, 0.0F, -1.0F, 2, 8, 2, 0.0F);
+        this.field_78186_h.addChild(this.field_78185_a0);
+        this.field_78185_a0.addChild(this.field_78185_a3);
+        this.field_78185_a0.addChild(this.field_78185_a2);
+        this.field_78185_a3.addChild(this.field_78185_a1);
+    }
+
+    @Override
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) { 
+    	this.setRotationAngles(f, f1, f2, f3,f4, f5, entity);
+    	float scaleFactor = 0.8F;
+    	GL11.glPushMatrix();
+    	GL11.glTranslatef(0.0F, 1.5F - 1.5F * scaleFactor, 0.0F);
+    	GL11.glScalef(scaleFactor, scaleFactor, scaleFactor);
+        this.field_78183_b.render(f5);
+        this.field_78182_e.render(f5);
+        this.field_78186_h.render(f5);
+        this.field_78180_g.render(f5);
+        this.field_78184_c.render(f5);
+        this.shape15.render(f5);
+        this.field_78179_f.render(f5);
+        this.field_78181_d.render(f5);
+        GL11.glPopMatrix();
+
+    }
+
+    /**
+     * This is a helper function from Tabula to set the rotation of model parts
+     */
+    public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+        modelRenderer.rotateAngleX = x;
+        modelRenderer.rotateAngleY = y;
+        modelRenderer.rotateAngleZ = z;
+    }
+
 /*    */ 
 /*    */   public void setRotationAngles(float par1, float par2, float par3, float par4, float par5, float par6, Entity par7Entity)
 /*    */   {
-/* 94 */     this.wolfLeg4.rotateAngleX = (MathHelper.cos(par1 * 0.6662F) * 1.4F * par2);
-/* 95 */     this.wolfLeg1.rotateAngleX = (MathHelper.cos(par1 * 0.6662F + 3.1415927F) * 1.4F * par2);
-/* 96 */     this.wolfLeg2.rotateAngleX = (MathHelper.cos(par1 * 0.6662F) * 1.4F * par2);
-/* 97 */     this.wolfLeg3.rotateAngleX = (MathHelper.cos(par1 * 0.6662F + 3.1415927F) * 1.4F * par2);
-/*    */   }
+/* 94 */     this.field_78179_f.rotateAngleX = (MathHelper.cos(par1 * 0.6662F) * 1.4F * par2);
+/* 95 */     this.field_78182_e.rotateAngleX = (MathHelper.cos(par1 * 0.6662F + 3.1415927F) * 1.4F * par2);
+/* 96 */     this.field_78184_c.rotateAngleX = (MathHelper.cos(par1 * 0.6662F) * 1.4F * par2);
+/* 97 */     this.field_78181_d.rotateAngleX = (MathHelper.cos(par1 * 0.6662F + 3.1415927F) * 1.4F * par2);
+/*    */   
 /*    */ }
+/*     */   public void setLivingAnimations(EntityLivingBase entitylivingbaseIn, float p_78086_2_, float p_78086_3_, float partialTickTime)
+/*     */   {
+	/* 94 */     this.field_78179_f.rotateAngleX = (MathHelper.cos(p_78086_2_ * 0.6662F) * 1.4F * p_78086_2_);
+	/* 95 */     this.field_78182_e.rotateAngleX = (MathHelper.cos(p_78086_2_ * 0.6662F + 3.1415927F) * 1.4F * p_78086_2_);
+	/* 96 */     this.field_78184_c.rotateAngleX = (MathHelper.cos(p_78086_2_ * 0.6662F) * 1.4F * p_78086_2_);
+	/* 97 */     this.field_78181_d.rotateAngleX = (MathHelper.cos(p_78086_2_ * 0.6662F + 3.1415927F) * 1.4F * p_78086_2_);
+/* 226 */     EntityAfricanWildDog entityocelot = (EntityAfricanWildDog)entitylivingbaseIn;
+/*     */     
+/* 233 */     if (entityocelot.isSneaking())
+/*     */     {
+	/* 94 */     this.field_78179_f.rotateAngleX = (MathHelper.cos(p_78086_2_ * 0.6662F) * 1.4F * p_78086_2_);
+	/* 95 */     this.field_78182_e.rotateAngleX = (MathHelper.cos(p_78086_2_ * 0.6662F + 3.1415927F) * 1.4F * p_78086_2_);
+	/* 96 */     this.field_78184_c.rotateAngleX = (MathHelper.cos(p_78086_2_ * 0.6662F) * 1.4F * p_78086_2_);
+	/* 97 */     this.field_78181_d.rotateAngleX = (MathHelper.cos(p_78086_2_ * 0.6662F + 3.1415927F) * 1.4F * p_78086_2_);
+    this.field_78185_a0.setRotationPoint(-1.5F, 0.2F, 5.6F);
+    this.setRotateAngle(field_78185_a0, 0.40980330836826856F, 0.0F, 0.0F);
+    this.field_78186_h.setRotationPoint(0.0F, 11.3F, -3.9F);
+    this.setRotateAngle(field_78186_h, -3.096039560112741F, 0.0F, 0.0F);
+    this.field_78185_a2.setRotationPoint(2.4F, -0.1F, -0.8F);
+    this.setRotateAngle(field_78185_a2, -1.0016444577195458F, 0.0F, 0.0F);
+    this.field_78185_a1.setRotationPoint(-1.8F, -2.0F, 0.2F);
+    this.setRotateAngle(field_78185_a1, -1.0927506446736497F, 0.045553093477052F, 0.0F);
+    this.field_78180_g.setRotationPoint(-1.3F, 11.7F, 7.5F);
+    this.setRotateAngle(field_78180_g, 0.31869712141416456F, 0.0F, 0.0F);
+/* 239 */       this.state = 0;
+/*     */     }
+/* 241 */     else if (entityocelot.isSprinting())
+/*     */     {
+	this.field_78186_h.setRotationPoint(0.0F, 11.3F, -3.9F);
+	this.field_78186_h.addBox(-4.0F, -3.4F, -3.0F, 5, 5, 9, 0.0F);
+      this.field_78186_h.setRotationPoint(0.0F, 11.3F, -3.9F);
+      this.setRotateAngle(field_78186_h, 2.9140017191297325F, 0.0F, 0.0F);
+this.setRotateAngle(field_78186_h, 3.141592653589793F, 0.0F, 0.0F);
+this.field_78185_a0.setRotationPoint(-1.5F, 0.2F, 5.6F);
+this.setRotateAngle(field_78185_a0, 0.36425021489121656F, 0.0F, 0.0F);
+this.field_78185_a2.setRotationPoint(2.4F, -0.1F, -0.8F);
+this.setRotateAngle(field_78185_a2, -0.9105382707654417F, 0.0F, 0.0F);
+this.field_78185_a1.setRotationPoint(-1.8F, -1.6F, 0.2F);
+this.setRotateAngle(field_78185_a1, -0.7198171965418932F, 0.045553093477052F, 0.0F);
+this.field_78180_g.setRotationPoint(-1.3F, 11.7F, 7.5F);
+this.setRotateAngle(field_78180_g, 1.5481070465189704F, 0.0F, 0.0F);
+/* 247 */       this.state = 2;
+/*     */     }
+/*     */     else
+/*     */     {
+	/* 94 */     this.field_78179_f.rotateAngleX = (MathHelper.cos(p_78086_2_ * 0.6662F) * 1.4F * p_78086_2_);
+	/* 95 */     this.field_78182_e.rotateAngleX = (MathHelper.cos(p_78086_2_ * 0.6662F + 3.1415927F) * 1.4F * p_78086_2_);
+	/* 96 */     this.field_78184_c.rotateAngleX = (MathHelper.cos(p_78086_2_ * 0.6662F) * 1.4F * p_78086_2_);
+	/* 97 */     this.field_78181_d.rotateAngleX = (MathHelper.cos(p_78086_2_ * 0.6662F + 3.1415927F) * 1.4F * p_78086_2_);
+    this.field_78185_a2.setRotationPoint(0.9F, 6.2F, -1.3F);
+    this.field_78185_a1.setRotationPoint(-1.5F, -1.5F, 0.3F);
+    this.setRotateAngle(field_78185_a1, -0.4553564018453205F, 0.045553093477052F, 0.0F);
+    this.field_78185_a2.setRotationPoint(2.4F, -0.1F, -0.8F);
+    this.setRotateAngle(field_78185_a2, -0.31869712141416456F, 0.0F, 0.0F);
+    this.field_78186_h.setRotationPoint(0.0F, 11.3F, -3.9F);
+    this.field_78185_a0.setRotationPoint(-1.5F, 0.2F, 5.6F);
+    this.field_78180_g.setRotationPoint(-1.3F, 11.7F, 7.5F);
+    this.setRotateAngle(field_78180_g, 0.31869712141416456F, 0.0F, 0.0F);
+
+
+/* 255 */       this.state = 1;
+/*     */     }
+/*     */   }
+}
+/*     */
 
 
 /* Location:              C:\Users\jhwol\Downloads\big update-deobf.jar!\com\africacraft\mob\ModelAfricanWildDog.class

@@ -1,17 +1,18 @@
 package entity;
 
-import javax.annotation.Nonnull;
-
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.passive.EntityRabbit;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 public class RenderAfricanLeopard extends RenderLiving<EntityAfricanLeopard> {
 
-    private ResourceLocation mobTexture = new ResourceLocation("wildanimals:textures/entity/predator/africanleopard.png");
-
+	private ResourceLocation mobTexture = new ResourceLocation("wildanimals:textures/entity/predator/leopard.png");
+    private ResourceLocation mobTexture1 = new ResourceLocation("wildanimals:textures/entity/predator/blackleopard.png");
+    
     public static final Factory FACTORY = new Factory();
 
     public RenderAfricanLeopard(RenderManager rendermanagerIn) {
@@ -20,11 +21,7 @@ public class RenderAfricanLeopard extends RenderLiving<EntityAfricanLeopard> {
         super(rendermanagerIn, new ModelAfricanLeopard(), 0.5F);
     }
 
-    @Override
-    @Nonnull
-    protected ResourceLocation getEntityTexture(@Nonnull EntityAfricanLeopard entity) {
-        return mobTexture;
-    }
+
 
     public static class Factory implements IRenderFactory<EntityAfricanLeopard> {
 
@@ -35,4 +32,35 @@ public class RenderAfricanLeopard extends RenderLiving<EntityAfricanLeopard> {
 
     }
 
+	@Override
+    protected ResourceLocation getEntityTexture(EntityAfricanLeopard entity)
+    {
+        String s = TextFormatting.getTextWithoutFormattingCodes(entity.getName());
+
+        if (s != null && "Toast".equals(s))
+        {
+            return mobTexture;
+        }
+        else
+        {
+            switch (entity.getRabbitType())
+            {
+                case 0:
+                default:
+                    return mobTexture;
+                case 1:
+                    return mobTexture1;
+                case 2:
+                    return mobTexture1;
+                case 3:
+                    return mobTexture;
+                case 4:
+                    return mobTexture1;
+                case 5:
+                    return mobTexture;
+                case 99:
+                    return mobTexture1;
+            }
+        }
+    }
 }
